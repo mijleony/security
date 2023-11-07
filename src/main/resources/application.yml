@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:securitydb
+    username: sa
+    password:
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  h2:
+    console:
+      path: /h2-ui
+      enabled: true
