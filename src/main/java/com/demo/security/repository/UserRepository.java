@@ -11,5 +11,5 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
   // @Query("select us from users as us where us.code := userCode ")
   // User findByCode(@Param("userCode") String userCode);
 
-    // User findByCode(String code);
+    UserEntity findByCode(String code);
 }
