@@ -3,6 +3,8 @@ package com.demo.security.controller;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +22,10 @@ public class UserController {
 
   private UserService userService;
 
+  /**
+   * @param userCode
+   * @return
+   */
   @GetMapping(
     path = "/user/{userCode}", 
     produces = MediaType.APPLICATION_JSON_VALUE
@@ -28,22 +34,22 @@ public class UserController {
     try {
       return userService.getUserDetail(userCode);
     } catch (Exception e) {
-      log.info("no se encontró usuario con code -> {}", userCode);
+      log.info( "no se encontró usuario con el código -> {} \n messageErr -> {}", userCode, e.getMessage());
     }
     return null;
   }
 
-  //  @PostMapping(
-  //   path = "/user",
-  //   consumer = MediaType.APPLICATION_JSON_VALUE,
-  //   produces = MediaType.APPLICATION_JSON_VALUE
-  // )
-  // public User postUser(@PathVariable("userCode") String userCode) {
-  //   try {
-  //     return userService.getUserDetail(userCode);
-  //   } catch (Exception e) {
-  //     log.info("no se encontró usuario con code -> {}", userCode);
-  //   }
-  //   return null;
-  // }
+   @PostMapping(
+    path = "/user",
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  public User createUser(@RequestBody User user) {
+    try {
+      return userService.postUser(user);
+    } catch (Exception e) {
+      log.info("no guardó usuario, object user -> {} \n messageErr -> {}", user, e.getMessage());
+    }
+    return null;
+  }
 }

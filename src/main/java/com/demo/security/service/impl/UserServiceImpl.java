@@ -1,6 +1,5 @@
 package com.demo.security.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.security.pojos.dto.User;
@@ -37,5 +36,22 @@ public class UserServiceImpl implements UserService {
     .documentNumber(ue.getDocumentNumber())
     .email(ue.getEmail())
     .build();
+  }
+
+  @Override
+  public User postUser(User user) throws Exception {
+   
+    userRepository.save(
+      UserEntity.builder()
+      .code(user.getCode())
+      .name(user.getName())
+      .lastName(user.getLastName())
+      .documentType(user.getDocumentType())
+      .documentNumber(user.getDocumentNumber())
+      .email(user.getEmail())
+      .build()
+    );
+    
+    return user;
   }
 }
