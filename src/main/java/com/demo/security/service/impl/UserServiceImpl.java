@@ -11,13 +11,23 @@ import com.demo.security.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-  @Autowired
-  UserRepository userRepository;
+  public final UserRepository userRepository;
+
+  UserServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @Override
-  public User getUserDetail(String userCode) {
+  public User getUserDetail(String userCode) throws Exception {
 
-    UserEntity ue = userRepository.findByCode(userCode);
+    UserEntity ue = this.userRepository.findAll()
+    .stream()
+      .filter( userEnt -> 
+        userCode.equals(userEnt.getCode())
+      )
+      .findFirst().orElseThrow(
+        Exception::new 
+      );
 
     return User.builder()
     .code(ue.getCode())
@@ -27,17 +37,5 @@ public class UserServiceImpl implements UserService {
     .documentNumber(ue.getDocumentNumber())
     .email(ue.getEmail())
     .build();
-
-    //  return User.builder()
-    // .code("2314434")
-    // .name("roberto")
-    // .lastName("velasquez")
-    // .documentType("CE")
-    // .documentNumber("2E222098R4")
-    // .email("robertv@gmail.com")
-    // .build();
-
-    // throw new UnsupportedOperationException("Unimplemented method 'getUserDetail'");
   }
-  
 }

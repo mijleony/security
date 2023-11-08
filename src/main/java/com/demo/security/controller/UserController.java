@@ -1,20 +1,23 @@
 package com.demo.security.controller;
 
-import com.demo.security.pojos.dto.User;
-import com.demo.security.service.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.security.pojos.dto.User;
+import com.demo.security.service.UserService;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
+@AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
-  @Autowired
   private UserService userService;
 
   @GetMapping(
@@ -22,6 +25,25 @@ public class UserController {
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   public User getInfo(@PathVariable("userCode") String userCode) {
-    return userService.getUserDetail(userCode);
+    try {
+      return userService.getUserDetail(userCode);
+    } catch (Exception e) {
+      log.info("no se encontró usuario con code -> {}", userCode);
+    }
+    return null;
   }
+
+  //  @PostMapping(
+  //   path = "/user",
+  //   consumer = MediaType.APPLICATION_JSON_VALUE,
+  //   produces = MediaType.APPLICATION_JSON_VALUE
+  // )
+  // public User postUser(@PathVariable("userCode") String userCode) {
+  //   try {
+  //     return userService.getUserDetail(userCode);
+  //   } catch (Exception e) {
+  //     log.info("no se encontró usuario con code -> {}", userCode);
+  //   }
+  //   return null;
+  // }
 }
